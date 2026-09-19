@@ -1,14 +1,14 @@
 const SAVE_KEY = "fresh-circuit-v1";
 const SCORE_KEY = "fresh-circuit-scores";
 const GOODS = {
-  lemonade: { name: "Lemonade", icon: "🍋", size: 1, spoil: 18, cold: true, base: 1.1 },
-  tea: { name: "Iced Tea", icon: "🧋", size: 1, spoil: 16, cold: true, base: 1.2 },
-  icecream: { name: "Ice Cream", icon: "🍦", size: 1, spoil: 28, cold: true, base: 1.6 },
-  fruit: { name: "Fruit Cups", icon: "🍓", size: 1, spoil: 24, cold: true, base: 1.5 },
-  cookies: { name: "Cookies", icon: "🍪", size: 1, spoil: 8, cold: false, base: 1.3 },
-  pretzels: { name: "Pretzels", icon: "🥨", size: 1, spoil: 5, cold: false, base: 1.15 },
-  water: { name: "Water", icon: "💧", size: 1, spoil: 0, cold: false, base: 0.7 },
-  ice: { name: "Ice", icon: "🧊", size: 1, spoil: 40, cold: false, base: 0.4, isIce: true }
+  lemonade: { name: "Lemonade", icon: "\uD83C\uDF4B", size: 1, spoil: 18, cold: true, base: 1.1 },
+  tea: { name: "Iced Tea", icon: "\uD83E\uDDCB", size: 1, spoil: 16, cold: true, base: 1.2 },
+  icecream: { name: "Ice Cream", icon: "\uD83C\uDF66", size: 1, spoil: 28, cold: true, base: 1.6 },
+  fruit: { name: "Fruit Cups", icon: "\uD83C\uDF53", size: 1, spoil: 24, cold: true, base: 1.5 },
+  cookies: { name: "Cookies", icon: "\uD83C\uDF6A", size: 1, spoil: 8, cold: false, base: 1.3 },
+  pretzels: { name: "Pretzels", icon: "\uD83E\uDD68", size: 1, spoil: 5, cold: false, base: 1.15 },
+  water: { name: "Water", icon: "\uD83D\uDCA7", size: 1, spoil: 0, cold: false, base: 0.7 },
+  ice: { name: "Ice", icon: "\uD83E\uDDCA", size: 1, spoil: 40, cold: false, base: 0.4, isIce: true }
 };
 const LOCS = {
   depot: { name: "Wholesale Depot", blurb: "Cheapest crates in town. Almost nobody buys here.", traffic: 4, buy: 0.72, sell: 0.55, heat: 0.9, demand: { lemonade: 0.4, tea: 0.4, icecream: 0.3, fruit: 0.4, cookies: 0.5, pretzels: 0.5, water: 0.5, ice: 0.9 } },
@@ -21,11 +21,11 @@ const LOCS = {
   fair: { name: "Hillside Fair", blurb: "Weekend crowds and festival markups.", traffic: 14, buy: 1.1, sell: 1.4, heat: 1.05, demand: { lemonade: 1.3, tea: 1.1, icecream: 1.2, fruit: 1.1, cookies: 1.2, pretzels: 1.3, water: 1.1, ice: 0.6 } }
 };
 const WEATHER = {
-  sunny: { label: "Sunny", icon: "☀️", traffic: 1.05, melt: 1.1, spoil: 1.05 },
-  hot: { label: "Heat wave", icon: "🔥", traffic: 1.15, melt: 1.7, spoil: 1.35 },
-  cloudy: { label: "Cloudy", icon: "☁️", traffic: 0.92, melt: 0.8, spoil: 0.9 },
-  rain: { label: "Rain", icon: "🌧️", traffic: 0.55, melt: 0.55, spoil: 0.85 },
-  cold: { label: "Chilly", icon: "🌬️", traffic: 0.7, melt: 0.35, spoil: 0.7 }
+  sunny: { label: "Sunny", icon: "\u2600\uFE0F", traffic: 1.05, melt: 1.1, spoil: 1.05 },
+  hot: { label: "Heat wave", icon: "\uD83D\uDD25", traffic: 1.15, melt: 1.7, spoil: 1.35 },
+  cloudy: { label: "Cloudy", icon: "\u2601\uFE0F", traffic: 0.92, melt: 0.8, spoil: 0.9 },
+  rain: { label: "Rain", icon: "\uD83C\uDF27\uFE0F", traffic: 0.55, melt: 0.55, spoil: 0.85 },
+  cold: { label: "Chilly", icon: "\uD83C\uDF2C\uFE0F", traffic: 0.7, melt: 0.35, spoil: 0.7 }
 };
 const UPGRADES = {
   cooler: { name: "Bigger Cooler", desc: "+12 cooler space", cost: [40, 90, 160], max: 3 },
@@ -40,8 +40,15 @@ const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 const rand = (a, b) => a + Math.random() * (b - a);
 const irand = (a, b) => Math.floor(rand(a, b + 1));
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-const money = (n) => `$${n.toFixed(2)}`;
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&", "<": "<", ">": ">", '"': """, "'": "&#39;" }[c]));
+function money(n) { return "$" + Number(n).toFixed(2); }
+function esc(s) {
+  return String(s)
+    .split("&").join("&")
+    .split("<").join("<")
+    .split(">").join(">")
+    .split(String.fromCharCode(34)).join(""")
+    .split("'").join("&#39;");
+}
 let state = null;
 let view = "title";
 let modal = null;
@@ -79,10 +86,10 @@ function weekend() {
 }
 function newPrices() {
   const prices = {};
-  for (const [lid, loc] of Object.entries(LOCS)) {
+  for (const lid of Object.keys(LOCS)) {
     prices[lid] = {};
-    for (const [gid, g] of Object.entries(GOODS)) {
-      prices[lid][gid] = +(g.base * loc.buy * (0.75 + Math.random() * 0.55)).toFixed(2);
+    for (const gid of Object.keys(GOODS)) {
+      prices[lid][gid] = +(GOODS[gid].base * LOCS[lid].buy * (0.75 + Math.random() * 0.55)).toFixed(2);
     }
   }
   return prices;
@@ -114,11 +121,11 @@ function rollEvent() {
 }
 function eventLabel() {
   return {
-    festival: "Street festival nearby — extra foot traffic.",
+    festival: "Street festival nearby - extra foot traffic.",
     gameday: "Game night! The stadium lot is packed.",
     heatwave: "Heat wave. Cold drinks fly. Ice vanishes.",
     rainout: "Washout risk. Umbrella helps.",
-    surplus: "Depot surplus — ice cream and ice are cheap there.",
+    surplus: "Depot surplus - ice cream and ice are cheap there.",
     inspector: "Health inspector is making rounds. Keep food fresh.",
     rival: "A rival cart is undercutting prices today."
   }[state.event] || "";
@@ -129,7 +136,7 @@ function bootState() {
   for (const id of Object.keys(GOODS)) sell[id] = +(GOODS[id].base * 1.8).toFixed(2);
   return {
     day: 1, cash: 120, loc: "depot", weather: "sunny", event: null,
-    inv: emptyInv(), prices, sell, reputation: 72,
+    inv: emptyInv(), prices: prices, sell: sell, reputation: 72,
     upgrades: { cooler: 0, umbrella: 0, bike: 0, sign: 0, packs: 0 },
     loan: 0, borrowed: false,
     log: ["Welcome to Fresh Circuit. Stock the cooler at the Depot, then hit the neighborhoods."],
@@ -149,7 +156,7 @@ function scores() {
 function addScore(entry) {
   const list = scores();
   list.push(entry);
-  list.sort((a, b) => b.score - a.score);
+  list.sort(function(a, b) { return b.score - a.score; });
   try { localStorage.setItem(SCORE_KEY, JSON.stringify(list.slice(0, 12))); } catch (e) {}
 }
 function log(msg, kind) {
@@ -196,7 +203,7 @@ function buy(id, n) {
 }
 function iceProtect() {
   const iceQty = qtyOf("ice");
-  const coldQty = Object.keys(GOODS).filter((id) => GOODS[id].cold).reduce((s, id) => s + qtyOf(id), 0);
+  const coldQty = Object.keys(GOODS).filter(function(id) { return GOODS[id].cold; }).reduce(function(s, id) { return s + qtyOf(id); }, 0);
   if (!coldQty) return 1;
   const cover = clamp(iceQty / Math.max(4, coldQty * 0.35), 0, 1);
   const pack = 1 - 0.18 * (state.upgrades.packs || 0);
@@ -227,20 +234,19 @@ function tickSpoil(travelSpill) {
     if (lost) notes.push(lost + " " + g.name);
   }
   if (travelSpill) {
-    const load = usedSpace() / cap();
-    let chance = clamp((load - 0.75) * 0.8, 0, 0.45);
+    const loadAmt = usedSpace() / cap();
+    let chance = clamp((loadAmt - 0.75) * 0.8, 0, 0.45);
     if (state.weather === "hot") chance += 0.08;
     if (state.upgrades.bike) chance *= 0.35;
     if (Math.random() < chance && usedSpace() > 0) {
-      const ids = Object.keys(GOODS).filter((id) => qtyOf(id) > 0);
+      const ids = Object.keys(GOODS).filter(function(id) { return qtyOf(id) > 0; });
       const id = pick(ids);
       const drop = Math.max(1, Math.floor(qtyOf(id) * rand(0.08, 0.22)));
       takeLots(id, drop);
       log("A bump in the road. You spilled " + drop + " " + GOODS[id].name + ".", "bad");
     }
   }
-  const spoiled = notes.filter(Boolean);
-  if (spoiled.length) log("Spoiled or melted: " + spoiled.join(", ") + ".", "bad");
+  if (notes.length) log("Spoiled or melted: " + notes.join(", ") + ".", "bad");
 }
 function expectedPrice(id) {
   const loc = LOCS[state.loc];
@@ -262,11 +268,11 @@ function sellDay() {
   traffic = Math.round(traffic * rand(0.85, 1.15));
   let revenue = 0, soldN = 0, complaints = 0;
   const lines = [];
-  const any = Object.keys(GOODS).some((id) => qtyOf(id) > 0);
+  const any = Object.keys(GOODS).some(function(id) { return qtyOf(id) > 0; });
   if (!any) {
     log("You opened with an empty cooler. A few people shrugged and walked on.", "warn");
     state.reputation = clamp(state.reputation - 2, 20, 100);
-    endDay(true);
+    endDay();
     return;
   }
   for (const id of Object.keys(GOODS)) {
@@ -287,7 +293,7 @@ function sellDay() {
     const sellQty = Math.min(have, Math.max(0, want));
     if (!sellQty) continue;
     const lots = takeLots(id, sellQty);
-    const avgF = lots.reduce((s, l) => s + l.fresh * l.qty, 0) / sellQty;
+    const avgF = lots.reduce(function(s, l) { return s + l.fresh * l.qty; }, 0) / sellQty;
     revenue += ask * sellQty;
     soldN += sellQty;
     lines.push(sellQty + " " + GOODS[id].name);
@@ -296,7 +302,7 @@ function sellDay() {
   }
   state.cash += revenue;
   if (state.event === "inspector") {
-    const left = Object.keys(GOODS).filter((id) => qtyOf(id) > 0 && !GOODS[id].isIce).map((id) => avgFresh(id));
+    const left = Object.keys(GOODS).filter(function(id) { return qtyOf(id) > 0 && !GOODS[id].isIce; }).map(function(id) { return avgFresh(id); });
     const worst = Math.min.apply(null, left.concat([100]));
     if (worst < 40 || complaints > 4) {
       const fine = 18 + irand(0, 16);
@@ -319,19 +325,19 @@ function sellDay() {
     state.cash += tip;
     log("A regular left a " + money(tip) + " tip.", "good");
   }
-  endDay(true);
+  endDay();
 }
 function travel(to) {
   if (to === state.loc) return;
   state.loc = to;
   log("Rolled the cart to " + LOCS[to].name + ".");
   tickSpoil(true);
-  endDay(false);
+  endDay();
 }
 function rest() {
   log("You stayed put and let the day drift.");
   tickSpoil(false);
-  endDay(false);
+  endDay();
 }
 function endDay() {
   if (state.loan > 0) {
