@@ -1,4 +1,4 @@
-const CACHE = "fresh-circuit-v1";
+const CACHE = "fresh-circuit-v2";
 const ASSETS = [
   "./",
   "./index.html",
