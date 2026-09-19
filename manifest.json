@@ -1,0 +1,20 @@
+{
+  "name": "Fresh Circuit",
+  "short_name": "Fresh Circuit",
+  "description": "Traveling snack-cart game. Buy cheap, sell fresh, don't let it spoil.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#102820",
+  "theme_color": "#24785c",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
