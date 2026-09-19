@@ -1,14 +1,14 @@
 const SAVE_KEY = "fresh-circuit-v1";
 const SCORE_KEY = "fresh-circuit-scores";
 const GOODS = {
-  lemonade: { name: "Lemonade", icon: "\uD83C\uDF4B", size: 1, spoil: 18, cold: true, base: 1.1 },
-  tea: { name: "Iced Tea", icon: "\uD83E\uDDCB", size: 1, spoil: 16, cold: true, base: 1.2 },
-  icecream: { name: "Ice Cream", icon: "\uD83C\uDF66", size: 1, spoil: 28, cold: true, base: 1.6 },
-  fruit: { name: "Fruit Cups", icon: "\uD83C\uDF53", size: 1, spoil: 24, cold: true, base: 1.5 },
-  cookies: { name: "Cookies", icon: "\uD83C\uDF6A", size: 1, spoil: 8, cold: false, base: 1.3 },
-  pretzels: { name: "Pretzels", icon: "\uD83E\uDD68", size: 1, spoil: 5, cold: false, base: 1.15 },
-  water: { name: "Water", icon: "\uD83D\uDCA7", size: 1, spoil: 0, cold: false, base: 0.7 },
-  ice: { name: "Ice", icon: "\uD83E\uDDCA", size: 1, spoil: 40, cold: false, base: 0.4, isIce: true }
+  lemonade: { name: "Lemonade", icon: "L", size: 1, spoil: 18, cold: true, base: 1.1 },
+  tea: { name: "Iced Tea", icon: "T", size: 1, spoil: 16, cold: true, base: 1.2 },
+  icecream: { name: "Ice Cream", icon: "I", size: 1, spoil: 28, cold: true, base: 1.6 },
+  fruit: { name: "Fruit Cups", icon: "F", size: 1, spoil: 24, cold: true, base: 1.5 },
+  cookies: { name: "Cookies", icon: "C", size: 1, spoil: 8, cold: false, base: 1.3 },
+  pretzels: { name: "Pretzels", icon: "P", size: 1, spoil: 5, cold: false, base: 1.15 },
+  water: { name: "Water", icon: "W", size: 1, spoil: 0, cold: false, base: 0.7 },
+  ice: { name: "Ice", icon: "Ice", size: 1, spoil: 40, cold: false, base: 0.4, isIce: true }
 };
 const LOCS = {
   depot: { name: "Wholesale Depot", blurb: "Cheapest crates in town. Almost nobody buys here.", traffic: 4, buy: 0.72, sell: 0.55, heat: 0.9, demand: { lemonade: 0.4, tea: 0.4, icecream: 0.3, fruit: 0.4, cookies: 0.5, pretzels: 0.5, water: 0.5, ice: 0.9 } },
@@ -21,11 +21,11 @@ const LOCS = {
   fair: { name: "Hillside Fair", blurb: "Weekend crowds and festival markups.", traffic: 14, buy: 1.1, sell: 1.4, heat: 1.05, demand: { lemonade: 1.3, tea: 1.1, icecream: 1.2, fruit: 1.1, cookies: 1.2, pretzels: 1.3, water: 1.1, ice: 0.6 } }
 };
 const WEATHER = {
-  sunny: { label: "Sunny", icon: "\u2600\uFE0F", traffic: 1.05, melt: 1.1, spoil: 1.05 },
-  hot: { label: "Heat wave", icon: "\uD83D\uDD25", traffic: 1.15, melt: 1.7, spoil: 1.35 },
-  cloudy: { label: "Cloudy", icon: "\u2601\uFE0F", traffic: 0.92, melt: 0.8, spoil: 0.9 },
-  rain: { label: "Rain", icon: "\uD83C\uDF27\uFE0F", traffic: 0.55, melt: 0.55, spoil: 0.85 },
-  cold: { label: "Chilly", icon: "\uD83C\uDF2C\uFE0F", traffic: 0.7, melt: 0.35, spoil: 0.7 }
+  sunny: { label: "Sunny", icon: "Sun", traffic: 1.05, melt: 1.1, spoil: 1.05 },
+  hot: { label: "Heat wave", icon: "Hot", traffic: 1.15, melt: 1.7, spoil: 1.35 },
+  cloudy: { label: "Cloudy", icon: "Cloud", traffic: 0.92, melt: 0.8, spoil: 0.9 },
+  rain: { label: "Rain", icon: "Rain", traffic: 0.55, melt: 0.55, spoil: 0.85 },
+  cold: { label: "Chilly", icon: "Cold", traffic: 0.7, melt: 0.35, spoil: 0.7 }
 };
 const UPGRADES = {
   cooler: { name: "Bigger Cooler", desc: "+12 cooler space", cost: [40, 90, 160], max: 3 },
@@ -35,20 +35,13 @@ const UPGRADES = {
   packs: { name: "Ice Packs", desc: "Ice and cold snacks last longer", cost: [30, 70], max: 2 }
 };
 const MAX_DAYS = 28;
-const app = () => document.getElementById("app");
-const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
-const rand = (a, b) => a + Math.random() * (b - a);
-const irand = (a, b) => Math.floor(rand(a, b + 1));
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+function app() { return document.getElementById("app"); }
+function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+function rand(a, b) { return a + Math.random() * (b - a); }
+function irand(a, b) { return Math.floor(rand(a, b + 1)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function money(n) { return "$" + Number(n).toFixed(2); }
-function esc(s) {
-  return String(s)
-    .split("&").join("&")
-    .split("<").join("<")
-    .split(">").join(">")
-    .split(String.fromCharCode(34)).join(""")
-    .split("'").join("&#39;");
-}
+function esc(s) { return String(s); }
 let state = null;
 let view = "title";
 let modal = null;
@@ -59,31 +52,27 @@ function emptyInv() {
   return inv;
 }
 function qtyOf(id) {
-  return (state.inv[id] || []).reduce((s, lot) => s + lot.qty, 0);
+  return (state.inv[id] || []).reduce(function(s, lot) { return s + lot.qty; }, 0);
 }
 function usedSpace() {
   let n = 0;
   for (const id of Object.keys(GOODS)) n += qtyOf(id) * GOODS[id].size;
   return n;
 }
-function cap() {
-  return 20 + (state.upgrades.cooler || 0) * 12;
-}
+function cap() { return 20 + (state.upgrades.cooler || 0) * 12; }
 function avgFresh(id) {
   const lots = state.inv[id] || [];
   const q = qtyOf(id);
   if (!q) return 100;
-  return lots.reduce((s, l) => s + l.fresh * l.qty, 0) / q;
+  return lots.reduce(function(s, l) { return s + l.fresh * l.qty; }, 0) / q;
 }
 function unitCost(id) {
   const lots = state.inv[id] || [];
   const q = qtyOf(id);
   if (!q) return 0;
-  return lots.reduce((s, l) => s + l.cost * l.qty, 0) / q;
+  return lots.reduce(function(s, l) { return s + l.cost * l.qty; }, 0) / q;
 }
-function weekend() {
-  return state.day % 7 === 6 || state.day % 7 === 0;
-}
+function weekend() { return state.day % 7 === 6 || state.day % 7 === 0; }
 function newPrices() {
   const prices = {};
   for (const lid of Object.keys(LOCS)) {
