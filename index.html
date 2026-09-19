@@ -17,12 +17,12 @@
 </head>
 <body>
   <div id="app"></div>
-  <script src="core.js"></script>
-  <script src="ui.js"></script>
+  <script src="core.js?v=4"></script>
+  <script src="ui.js?v=4"></script>
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./sw.js").catch(function () {});
+        navigator.serviceWorker.register("./sw.js?v=4").catch(function () {});
       });
     }
   </script>
