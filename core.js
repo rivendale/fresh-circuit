@@ -1,31 +1,31 @@
 const SAVE_KEY = "fresh-circuit-v1";
 const SCORE_KEY = "fresh-circuit-scores";
 const GOODS = {
-  lemonade: { name: "Lemonade", icon: "L", size: 1, spoil: 18, cold: true, base: 1.1 },
-  tea: { name: "Iced Tea", icon: "T", size: 1, spoil: 16, cold: true, base: 1.2 },
-  icecream: { name: "Ice Cream", icon: "I", size: 1, spoil: 28, cold: true, base: 1.6 },
-  fruit: { name: "Fruit Cups", icon: "F", size: 1, spoil: 24, cold: true, base: 1.5 },
-  cookies: { name: "Cookies", icon: "C", size: 1, spoil: 8, cold: false, base: 1.3 },
-  pretzels: { name: "Pretzels", icon: "P", size: 1, spoil: 5, cold: false, base: 1.15 },
-  water: { name: "Water", icon: "W", size: 1, spoil: 0, cold: false, base: 0.7 },
-  ice: { name: "Ice", icon: "Ice", size: 1, spoil: 40, cold: false, base: 0.4, isIce: true }
+  lemonade: { name: "Lemonade", icon: "\uD83C\uDF4B", size: 1, spoil: 18, cold: true, base: 1.1 },
+  tea: { name: "Iced Tea", icon: "\uD83E\uDDCB", size: 1, spoil: 16, cold: true, base: 1.2 },
+  icecream: { name: "Ice Cream", icon: "\uD83C\uDF66", size: 1, spoil: 30, cold: true, base: 1.6 },
+  fruit: { name: "Fruit Cups", icon: "\uD83C\uDF53", size: 1, spoil: 24, cold: true, base: 1.5 },
+  cookies: { name: "Cookies", icon: "\uD83C\uDF6A", size: 1, spoil: 8, cold: false, base: 1.3 },
+  pretzels: { name: "Pretzels", icon: "\uD83E\uDD68", size: 1, spoil: 5, cold: false, base: 1.15 },
+  water: { name: "Water", icon: "\uD83D\uDCA7", size: 1, spoil: 0, cold: false, base: 0.7 },
+  ice: { name: "Ice", icon: "\uD83E\uDDCA", size: 1, spoil: 48, cold: false, base: 0.4, isIce: true }
 };
 const LOCS = {
-  depot: { name: "Wholesale Depot", blurb: "Cheapest crates in town. Almost nobody buys here.", traffic: 4, buy: 0.72, sell: 0.55, heat: 0.9, demand: { lemonade: 0.4, tea: 0.4, icecream: 0.3, fruit: 0.4, cookies: 0.5, pretzels: 0.5, water: 0.5, ice: 0.9 } },
+  depot: { name: "Wholesale Depot", blurb: "Cheapest crates in town. Almost nobody buys here.", traffic: 3, buy: 0.68, sell: 0.42, heat: 0.9, demand: { lemonade: 0.3, tea: 0.3, icecream: 0.2, fruit: 0.3, cookies: 0.4, pretzels: 0.4, water: 0.4, ice: 0.8 } },
   park: { name: "Riverside Park", blurb: "Families, bikes, and picnic blankets.", traffic: 18, buy: 1.05, sell: 1.15, heat: 1.0, demand: { lemonade: 1.4, tea: 1.1, icecream: 1.3, fruit: 1.2, cookies: 1.0, pretzels: 0.8, water: 1.1, ice: 0.6 } },
-  downtown: { name: "Downtown Plaza", blurb: "Lunch rush. People pay for convenience.", traffic: 20, buy: 1.18, sell: 1.28, heat: 1.05, demand: { lemonade: 1.1, tea: 1.3, icecream: 0.8, fruit: 1.0, cookies: 1.35, pretzels: 1.2, water: 1.0, ice: 0.4 } },
-  beach: { name: "Beach Boardwalk", blurb: "Sun, sand, and melting everything.", traffic: 22, buy: 1.22, sell: 1.35, heat: 1.35, demand: { lemonade: 1.5, tea: 1.2, icecream: 1.8, fruit: 1.1, cookies: 0.7, pretzels: 0.7, water: 1.6, ice: 0.8 } },
-  school: { name: "Schoolyard Gate", blurb: "After-school swarm. Volume over fancy prices.", traffic: 24, buy: 0.98, sell: 0.95, heat: 1.0, demand: { lemonade: 1.2, tea: 0.7, icecream: 1.4, fruit: 1.1, cookies: 1.5, pretzels: 1.3, water: 1.0, ice: 0.5 } },
-  stadium: { name: "Stadium Lot", blurb: "Quiet most days. Packed on game nights.", traffic: 10, buy: 1.15, sell: 1.2, heat: 1.1, demand: { lemonade: 1.0, tea: 0.8, icecream: 1.1, fruit: 0.6, cookies: 1.0, pretzels: 1.6, water: 1.4, ice: 0.5 } },
+  downtown: { name: "Downtown Plaza", blurb: "Lunch rush. People pay for convenience.", traffic: 18, buy: 1.18, sell: 1.36, heat: 1.05, demand: { lemonade: 1.1, tea: 1.3, icecream: 0.8, fruit: 1.0, cookies: 1.35, pretzels: 1.2, water: 1.0, ice: 0.4 } },
+  beach: { name: "Beach Boardwalk", blurb: "Sun, sand, and melting everything.", traffic: 22, buy: 1.22, sell: 1.38, heat: 1.5, demand: { lemonade: 1.5, tea: 1.2, icecream: 1.9, fruit: 1.1, cookies: 0.7, pretzels: 0.7, water: 1.7, ice: 0.9 } },
+  school: { name: "Schoolyard Gate", blurb: "After-school swarm. Volume over fancy prices.", traffic: 26, buy: 0.98, sell: 0.88, heat: 1.0, demand: { lemonade: 1.25, tea: 0.7, icecream: 1.5, fruit: 1.1, cookies: 1.55, pretzels: 1.35, water: 1.05, ice: 0.5 } },
+  stadium: { name: "Stadium Lot", blurb: "Quiet most days. Packed on game nights.", traffic: 9, buy: 1.15, sell: 1.2, heat: 1.1, demand: { lemonade: 1.0, tea: 0.8, icecream: 1.1, fruit: 0.6, cookies: 1.0, pretzels: 1.6, water: 1.4, ice: 0.5 } },
   market: { name: "Farmers Market", blurb: "Good buying and decent selling, if you time it.", traffic: 16, buy: 0.88, sell: 1.05, heat: 1.0, demand: { lemonade: 1.0, tea: 1.0, icecream: 0.7, fruit: 1.5, cookies: 1.1, pretzels: 1.0, water: 0.8, ice: 0.7 } },
-  fair: { name: "Hillside Fair", blurb: "Weekend crowds and festival markups.", traffic: 14, buy: 1.1, sell: 1.4, heat: 1.05, demand: { lemonade: 1.3, tea: 1.1, icecream: 1.2, fruit: 1.1, cookies: 1.2, pretzels: 1.3, water: 1.1, ice: 0.6 } }
+  fair: { name: "Hillside Fair", blurb: "Weekend crowds and festival markups.", traffic: 14, buy: 1.1, sell: 1.42, heat: 1.05, demand: { lemonade: 1.3, tea: 1.1, icecream: 1.2, fruit: 1.1, cookies: 1.2, pretzels: 1.3, water: 1.1, ice: 0.6 } }
 };
 const WEATHER = {
-  sunny: { label: "Sunny", icon: "Sun", traffic: 1.05, melt: 1.1, spoil: 1.05 },
-  hot: { label: "Heat wave", icon: "Hot", traffic: 1.15, melt: 1.7, spoil: 1.35 },
-  cloudy: { label: "Cloudy", icon: "Cloud", traffic: 0.92, melt: 0.8, spoil: 0.9 },
-  rain: { label: "Rain", icon: "Rain", traffic: 0.55, melt: 0.55, spoil: 0.85 },
-  cold: { label: "Chilly", icon: "Cold", traffic: 0.7, melt: 0.35, spoil: 0.7 }
+  sunny: { label: "Sunny", icon: "\u2600\uFE0F", traffic: 1.05, melt: 1.15, spoil: 1.05 },
+  hot: { label: "Heat wave", icon: "\uD83D\uDD25", traffic: 1.18, melt: 1.85, spoil: 1.4 },
+  cloudy: { label: "Cloudy", icon: "\u2601\uFE0F", traffic: 0.92, melt: 0.8, spoil: 0.9 },
+  rain: { label: "Rain", icon: "\uD83C\uDF27\uFE0F", traffic: 0.52, melt: 0.55, spoil: 0.85 },
+  cold: { label: "Chilly", icon: "\uD83C\uDF2C\uFE0F", traffic: 0.68, melt: 0.32, spoil: 0.7 }
 };
 const UPGRADES = {
   cooler: { name: "Bigger Cooler", desc: "+12 cooler space", cost: [40, 90, 160], max: 3 },
@@ -128,7 +128,7 @@ function bootState() {
     inv: emptyInv(), prices: prices, sell: sell, reputation: 72,
     upgrades: { cooler: 0, umbrella: 0, bike: 0, sign: 0, packs: 0 },
     loan: 0, borrowed: false,
-    log: ["Welcome to Fresh Circuit. Stock the cooler at the Depot, then hit the neighborhoods."],
+    log: ["Day 1 at the Depot. Buy ice and a few cold drinks, then leave. Nobody shops here."],
     name: "You"
   };
 }
@@ -194,9 +194,9 @@ function iceProtect() {
   const iceQty = qtyOf("ice");
   const coldQty = Object.keys(GOODS).filter(function(id) { return GOODS[id].cold; }).reduce(function(s, id) { return s + qtyOf(id); }, 0);
   if (!coldQty) return 1;
-  const cover = clamp(iceQty / Math.max(4, coldQty * 0.35), 0, 1);
+  const cover = clamp(iceQty / Math.max(3, coldQty * 0.5), 0, 1);
   const pack = 1 - 0.18 * (state.upgrades.packs || 0);
-  return 1 - cover * 0.55 * (2 - pack) / 2;
+  return 1 - cover * 0.62 * (2 - pack) / 2;
 }
 function tickSpoil(travelSpill) {
   const w = WEATHER[state.weather];
@@ -209,9 +209,9 @@ function tickSpoil(travelSpill) {
     const lots = state.inv[id];
     if (!lots.length) continue;
     let rate = g.spoil * w.spoil * pack;
-    if (g.cold) rate *= (0.55 + loc.heat * 0.7) * protect;
+    if (g.cold) rate *= (0.55 + loc.heat * 0.75) * protect;
     if (g.isIce) rate *= w.melt * loc.heat * pack;
-    if (state.weather === "hot" && (g.cold || g.isIce)) rate *= 1.25;
+    if (state.weather === "hot" && (g.cold || g.isIce)) rate *= 1.3;
     let lost = 0;
     for (const lot of lots) lot.fresh = clamp(lot.fresh - rate, 0, 100);
     const keep = [];
@@ -224,18 +224,20 @@ function tickSpoil(travelSpill) {
   }
   if (travelSpill) {
     const loadAmt = usedSpace() / cap();
-    let chance = clamp((loadAmt - 0.75) * 0.8, 0, 0.45);
-    if (state.weather === "hot") chance += 0.08;
+    let chance = clamp((loadAmt - 0.65) * 0.9, 0, 0.5);
+    if (state.weather === "hot") chance += 0.1;
     if (state.upgrades.bike) chance *= 0.35;
     if (Math.random() < chance && usedSpace() > 0) {
       const ids = Object.keys(GOODS).filter(function(id) { return qtyOf(id) > 0; });
       const id = pick(ids);
-      const drop = Math.max(1, Math.floor(qtyOf(id) * rand(0.08, 0.22)));
+      const drop = Math.max(1, Math.floor(qtyOf(id) * rand(0.1, 0.24)));
       takeLots(id, drop);
       log("A bump in the road. You spilled " + drop + " " + GOODS[id].name + ".", "bad");
     }
   }
   if (notes.length) log("Spoiled or melted: " + notes.join(", ") + ".", "bad");
+  const coldLeft = Object.keys(GOODS).filter(function(id) { return GOODS[id].cold && qtyOf(id) > 0; }).length;
+  if (coldLeft && qtyOf("ice") < 3) log("Ice is thin. Cold snacks will slump fast.", "warn");
 }
 function expectedPrice(id) {
   const loc = LOCS[state.loc];
@@ -249,11 +251,11 @@ function sellDay() {
   let traffic = loc.traffic * w.traffic * (0.7 + state.reputation / 200);
   if (weekend()) traffic *= (loc.name.indexOf("Fair") >= 0 || loc.name.indexOf("Park") >= 0 || loc.name.indexOf("Beach") >= 0) ? 1.35 : 1.08;
   if (state.event === "festival" && state.loc !== "depot") traffic *= 1.45;
-  if (state.event === "gameday" && state.loc === "stadium") traffic *= 3.2;
-  if (state.event === "rainout") traffic *= state.upgrades.umbrella ? 0.85 : 0.6;
+  if (state.event === "gameday" && state.loc === "stadium") traffic *= 3.4;
+  if (state.event === "rainout") traffic *= state.upgrades.umbrella ? 0.85 : 0.55;
   if (state.weather === "rain") traffic *= state.upgrades.umbrella ? 1.35 : 1;
   if (state.event === "rival") traffic *= 0.82;
-  if (state.loc === "depot") traffic *= 0.5;
+  if (state.loc === "depot") traffic *= 0.4;
   traffic = Math.round(traffic * rand(0.85, 1.15));
   let revenue = 0, soldN = 0, complaints = 0;
   const lines = [];
@@ -275,7 +277,7 @@ function sellDay() {
     if (priceRatio > 1) want *= Math.pow(1 / priceRatio, 1.6 + (state.event === "rival" ? 0.5 : 0));
     else want *= 1 + (1 - priceRatio) * 0.35;
     if (fresh < 55) want *= fresh / 70;
-    if (state.weather === "hot" && (id === "icecream" || id === "lemonade" || id === "water" || id === "ice")) want *= 1.25;
+    if (state.weather === "hot" && (id === "icecream" || id === "lemonade" || id === "water" || id === "ice")) want *= 1.28;
     if (state.weather === "cold" && (id === "icecream" || id === "water")) want *= 0.55;
     if (state.weather === "rain" && (id === "tea" || id === "pretzels" || id === "cookies")) want *= 1.2;
     want = Math.round(want);
@@ -309,6 +311,7 @@ function sellDay() {
   } else if (soldN > 12) state.reputation = clamp(state.reputation + 2, 20, 100);
   if (soldN) log("Sold " + lines.join(", ") + " for " + money(revenue) + ".", "good");
   else log("Nobody bought. Prices, weather, or location may be off.", "warn");
+  if (state.loc === "depot" && soldN < 3) log("Depot is for buying. Take the cart to a crowd.", "warn");
   if (Math.random() < 0.08 && soldN > 8) {
     const tip = +rand(2, 8).toFixed(2);
     state.cash += tip;
