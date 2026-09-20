@@ -31,9 +31,72 @@ body {
     var(--bg);
   color: var(--text);
   min-height: 100%;
+  transition: background 0.45s ease;
+}
+
+body.place-depot {
+  background:
+    radial-gradient(900px 500px at 90% -20%, #3d4a3f 0%, transparent 50%),
+    linear-gradient(180deg, #1a2420 0%, #102018 100%);
+}
+body.place-park {
+  background:
+    radial-gradient(800px 420px at 20% 0%, #3d8a4a 0%, transparent 55%),
+    linear-gradient(180deg, #163a24 0%, #102820 100%);
+}
+body.place-downtown {
+  background:
+    radial-gradient(700px 400px at 80% 10%, #8a5a28 0%, transparent 50%),
+    linear-gradient(180deg, #2a2418 0%, #1a1810 100%);
+}
+body.place-beach {
+  background:
+    radial-gradient(900px 500px at 50% -10%, #e0b25a 0%, transparent 50%),
+    linear-gradient(180deg, #2a4a58 0%, #1a3040 55%, #c4a06a 100%);
+}
+body.place-school {
+  background:
+    radial-gradient(700px 380px at 10% 0%, #4a6a8a 0%, transparent 50%),
+    linear-gradient(180deg, #243040 0%, #182028 100%);
+}
+body.place-stadium {
+  background:
+    radial-gradient(600px 360px at 70% 0%, #5a4a18 0%, transparent 45%),
+    linear-gradient(180deg, #121418 0%, #1a1c14 100%);
+}
+body.place-market {
+  background:
+    radial-gradient(700px 400px at 30% 0%, #8a3a3a 0%, transparent 50%),
+    linear-gradient(180deg, #3a2418 0%, #201810 100%);
+}
+body.place-fair {
+  background:
+    radial-gradient(800px 420px at 80% 0%, #c45a8a 0%, transparent 48%),
+    linear-gradient(180deg, #3a1830 0%, #201018 100%);
+}
+
+body.wx-hot::before,
+body.wx-rain::before,
+body.wx-cold::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+body.wx-hot::before {
+  background: linear-gradient(180deg, rgba(255,140,60,0.18), rgba(255,80,20,0.08));
+}
+body.wx-rain::before {
+  background: linear-gradient(180deg, rgba(20,40,60,0.28), rgba(10,20,30,0.18));
+}
+body.wx-cold::before {
+  background: linear-gradient(180deg, rgba(180,220,255,0.12), rgba(80,120,160,0.08));
 }
 
 #app {
+  position: relative;
+  z-index: 1;
   max-width: 480px;
   margin: 0 auto;
   min-height: 100%;
@@ -154,7 +217,7 @@ button, input { font: inherit; }
   cursor: pointer;
   min-height: 48px;
 }
-.btn:active { transform: translateY(1px); }
+.btn:active { transform: scale(0.98); }
 .btn.primary {
   background: linear-gradient(180deg, #f4c430, #e0a81c);
   color: #2a2208;
@@ -297,6 +360,72 @@ button, input { font: inherit; }
   font-size: 13px;
   font-weight: 700;
   margin-top: 10px;
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.22);
+  color: var(--muted);
+}
+.chip.good { color: #062418; background: var(--mint); border-color: #1e8a5e; }
+.chip.warn { color: #2a2208; background: var(--accent); border-color: #c99614; }
+.chip.hot { color: #3a1208; background: #ef7a62; border-color: #c45a40; }
+.chip.pulse { animation: pulse 1.4s ease infinite; }
+@keyframes pulse {
+  50% { transform: scale(1.04); }
+}
+
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 44px;
+  align-items: center;
+}
+.shelf-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 6px 8px;
+  font-weight: 800;
+}
+.shelf-item.soft { filter: saturate(0.7); }
+.shelf-item.wilt { filter: grayscale(0.45) brightness(0.85); opacity: 0.8; }
+.shelf-empty { color: var(--muted); font-size: 13px; }
+
+.queue {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 28px;
+  padding: 18px 0 8px;
+}
+.queue span {
+  animation: hop 0.7s ease infinite;
+}
+.queue span:nth-child(2) { animation-delay: 0.12s; }
+.queue span:nth-child(3) { animation-delay: 0.24s; }
+.queue span:nth-child(4) { animation-delay: 0.36s; }
+.queue span:nth-child(5) { animation-delay: 0.48s; }
+@keyframes hop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.till-tick {
+  text-align: center;
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 18px;
 }
 
 .hidden { display: none !important; }
